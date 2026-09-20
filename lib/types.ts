@@ -21,7 +21,7 @@ export type ArticleFrontmatter = {
   topic: string;
   datePublished: string;
   dateModified: string;
-  author: Person;
+  author?: Person | null;
   reviewedBy?: Person | null;
   scientificReviewStatus?: "not-reviewed" | "reviewed";
   image?: string | null;

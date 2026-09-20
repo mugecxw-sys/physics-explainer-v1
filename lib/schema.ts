@@ -24,12 +24,15 @@ export function articleSchema(article: ArticleDocument) {
     datePublished: frontmatter.datePublished,
     dateModified: frontmatter.dateModified,
     mainEntityOfPage: absoluteUrl(`/physics/${article.cluster}/${frontmatter.slug}/`),
-    author: { "@type": "Person", name: frontmatter.author.name },
     publisher: { "@type": "Organization", name: siteConfig.organization.name },
   };
 
-  if (frontmatter.author.url) {
-    (schema.author as Record<string, unknown>).url = frontmatter.author.url;
+  if (frontmatter.author?.name) {
+    schema.author = {
+      "@type": "Person",
+      name: frontmatter.author.name,
+      ...(frontmatter.author.url ? { url: frontmatter.author.url } : {}),
+    };
   }
   if (frontmatter.reviewedBy) {
     schema.reviewedBy = {

@@ -29,7 +29,6 @@ export function ArticleLayout({ article, children }: { article: ArticleDocument;
   const { frontmatter } = article;
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Topics", href: "/topics/" },
     { label: topic?.title ?? frontmatter.topic, href: topic ? `/topics/${topic.slug}/` : "/topics/" },
     { label: frontmatter.title },
   ];
@@ -46,7 +45,7 @@ export function ArticleLayout({ article, children }: { article: ArticleDocument;
           <h1>{frontmatter.title}</h1>
           <p className="article-description">{frontmatter.description}</p>
           <div className="article-meta">
-            <span>By {frontmatter.author.name}</span>
+            {frontmatter.author?.name && <span>By {frontmatter.author.name}</span>}
             <span>Last updated <time dateTime={frontmatter.dateModified}>{frontmatter.dateModified}</time></span>
             <Link href="/editorial-policy/">Editorial method</Link>
           </div>

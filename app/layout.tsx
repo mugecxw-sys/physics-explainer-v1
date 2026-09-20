@@ -7,7 +7,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
+  title: {
+    default: "Physics, Plainly. | Understand Physics Without the Textbook Wall",
+    template: `%s | ${siteConfig.name}`,
+  },
   description: siteConfig.description,
   alternates: { canonical: "/" },
   openGraph: {
