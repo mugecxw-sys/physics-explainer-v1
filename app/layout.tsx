@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": absoluteUrl("/#website"),
   name: siteConfig.name,
   url: absoluteUrl("/"),
   description: siteConfig.description,
@@ -39,6 +40,7 @@ const websiteSchema = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": absoluteUrl("/#organization"),
   name: siteConfig.organization.name,
   url: absoluteUrl("/"),
 };

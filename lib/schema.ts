@@ -19,6 +19,7 @@ export function articleSchema(article: ArticleDocument) {
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": absoluteUrl(`/physics/${article.cluster}/${frontmatter.slug}/#article`),
     headline: frontmatter.title,
     description: frontmatter.description,
     datePublished: frontmatter.datePublished,
