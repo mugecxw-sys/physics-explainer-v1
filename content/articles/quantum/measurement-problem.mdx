@@ -1,8 +1,8 @@
 ---
 title: "What Is the Quantum Measurement Problem?"
-description: "Why quantum theory appears to describe smooth evolution and definite measurement outcomes in two different ways."
+description: "Why quantum theory predicts superposed measurement branches, why experiments give definite outcomes, and what decoherence does—and does not—explain."
 slug: measurement-problem
-topic: Quantum Physics
+topic: "Quantum Physics"
 datePublished: "2026-09-20"
 dateModified: "2026-09-20"
 reviewedBy: null
@@ -13,35 +13,267 @@ related: []
 next: null
 featured: true
 sources:
-  - title: "The Quantum Measurement Problem"
-    url: "https://plato.stanford.edu/entries/qt-measurement/"
-    publisher: Stanford Encyclopedia of Philosophy
+  - title: "Stanford Encyclopedia of Philosophy — Philosophical Issues in Quantum Theory"
+    url: "https://plato.stanford.edu/entries/qt-issues/"
+    publisher: "Stanford Encyclopedia of Philosophy"
+  - title: "Stanford Encyclopedia of Philosophy — The Role of Decoherence in Quantum Mechanics"
+    url: "https://plato.stanford.edu/entries/qm-decoherence/"
+    publisher: "Stanford Encyclopedia of Philosophy"
+  - title: "Stanford Encyclopedia of Philosophy — Quantum Mechanics"
+    url: "https://plato.stanford.edu/entries/qm/"
+    publisher: "Stanford Encyclopedia of Philosophy"
+  - title: "MIT OpenCourseWare — Quantum Physics I"
+    url: "https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/"
+    publisher: "MIT OpenCourseWare"
 ---
 
 <ShortAnswer>
-Quantum theory describes a system as a combination of possible outcomes, yet an experiment records one definite result. The measurement problem asks how—or whether—the theory explains that transition.
+Quantum mechanics gives us two very successful ways of talking about what happens.
+
+When an isolated quantum system evolves, its state changes smoothly according to the Schrödinger equation. But when a measurement is made, textbooks usually say that one definite outcome is obtained and the state is updated to match that result.
+
+The **measurement problem** is the tension between those two descriptions.
+
+If the measuring device is also made of quantum matter, why should the ordinary quantum evolution suddenly stop at the detector? If the system and detector evolve together, the mathematics can leave them in a superposition of different correlated outcomes rather than selecting one unique result.
+
+Decoherence explains why interference between those alternatives becomes extremely hard to observe, but by itself it does not explain why one definite outcome is experienced.
 </ShortAnswer>
+## The Puzzle Starts With a Simple Fact
 
-## Two rules that seem hard to fit together
+Quantum mechanics lets a system be in a **superposition**.
 
-Between measurements, the quantum state evolves in a continuous, predictable mathematical way. A measurement, by contrast, appears to select a particular result according to probabilities. The tension between those descriptions is the core of the problem.
+That does not mean the system is secretly in one ordinary state and we simply have not found out which one yet. A superposition can produce interference, so it has experimentally observable consequences that an ordinary classical mixture does not.
 
-## Why probability is not the whole puzzle
+Suppose a quantum system has two possible measurement outcomes, which we will call 0 and 1.
 
-The difficulty is not merely that quantum mechanics predicts probabilities. The deeper question is why a measurement has one experienced outcome when the mathematical state can include several alternatives.
+Before measurement, its state might be a superposition containing both alternatives.
 
-<VisualExplanation title="Possibilities and a recorded outcome">
-  Picture several allowed branches before a measurement and one stable record afterward. The measurement problem concerns how those descriptions belong to one theory.
-</VisualExplanation>
+When we actually perform the measurement, however, the apparatus does not normally display a blurry combination of two pointer readings. We get a definite record:
 
-## Is collapse a physical event?
+- the detector says 0, or
+- the detector says 1.
 
-Some interpretations treat collapse as a real process. Others treat it as an update in description, deny that a unique collapse occurs, or add further structure to the theory. Experiments constrain the predictions, but they do not automatically settle every interpretive account.
+Quantum mechanics predicts the probabilities of those results with extraordinary accuracy.
 
-<CommonMisconception>
-The measurement problem is not proof that quantum mechanics fails experimentally. Quantum predictions are extraordinarily successful; the problem concerns what the formalism says is happening when outcomes become definite.
-</CommonMisconception>
+The problem is not that the theory gives bad predictions.
 
-## One thing to remember
+The problem is understanding how the mathematical description of quantum evolution connects to the fact that experiments have definite recorded outcomes.
 
-The measurement problem is the gap between a quantum description containing alternatives and the single result recorded in an experiment.
+## What Happens During a Measurement?
+
+Start without equations.
+
+The system reaches a detector that is ready to measure it.
+
+If the system is in outcome-0 state, a good detector should end up showing 0.
+
+If the system is in outcome-1 state, the same detector should end up showing 1.
+
+So the measurement interaction creates a correlation:
+
+```text
+system 0 → detector reads 0
+system 1 → detector reads 1
+```
+
+So far, nothing is strange.
+
+The difficulty appears when the incoming system is in a superposition of 0 and 1.
+
+Quantum evolution is linear. Roughly speaking, if the theory says how the apparatus responds to alternative 0 and how it responds to alternative 1, then applying the same quantum evolution to a superposition gives a superposition of the two correlated system-apparatus possibilities.
+
+Instead of automatically producing one line,
+
+```text
+system 0 + detector 0
+```
+
+or the other,
+
+```text
+system 1 + detector 1
+```
+
+the ordinary unitary evolution gives a combined state containing both correlated alternatives.
+
+That is the core of the measurement problem.
+
+## The Same Point in One Equation
+
+The words should come first. The equation only makes the structure compact.
+
+Let the system begin in a superposition
+
+`a|0⟩ + b|1⟩`
+
+and let the apparatus begin in a ready state
+
+`|R⟩`
+
+A measurement interaction is designed so that the apparatus becomes correlated with the system. Linear quantum evolution then gives
+
+`(a|0⟩ + b|1⟩)|R⟩ → a|0⟩|A₀⟩ + b|1⟩|A₁⟩`
+
+Here:
+
+- `|A₀⟩` means “apparatus records 0”
+- `|A₁⟩` means “apparatus records 1”
+
+The important point is not the notation.
+
+The important point is that the right-hand side still contains both correlated alternatives.
+
+The Schrödinger evolution has not, by itself, replaced that state with only the 0 branch or only the 1 branch.
+
+Yet an actual laboratory notebook contains one result.
+
+That is the gap the measurement problem is trying to understand.
+
+## Where Does the Textbook Collapse Rule Enter?
+
+Introductory quantum mechanics usually gives a measurement rule.
+
+If a measurement has several possible outcomes, the theory assigns probabilities to those outcomes. Once a particular result is obtained, the quantum state used for later predictions is updated to the state associated with that result.
+
+This is often called **wavefunction collapse** or the **projection postulate**.
+
+As a calculation rule, it works.
+
+But the measurement problem asks what status that rule has.
+
+Is collapse:
+
+- a fundamental physical process?
+- an effective rule for situations in which a definite record has been produced?
+- a change in the information used to describe the system?
+- unnecessary at the fundamental level because the quantum state should be interpreted differently?
+
+Those are not all the same claim.
+
+The experiment tells us what statistics and records we obtain. The further statement about what the wavefunction *really does* between or during measurements depends on the theoretical framework.
+
+## Why Not Just Say “The Detector Causes Collapse”?
+
+Because the detector is itself a physical system.
+
+It is made of atoms, electrons, fields, and other quantum ingredients.
+
+If ordinary quantum mechanics applies to those ingredients, then simply pointing at the detector does not explain why the usual quantum evolution should stop there.
+
+You can move the boundary outward:
+
+```text
+particle → detector → computer → laboratory
+```
+
+and describe more of the chain quantum mechanically.
+
+The conceptual question remains: how does a description containing multiple correlated alternatives connect to a definite result?
+
+This is why the measurement problem is not simply the same as the **observer effect**.
+
+The observer effect is about how measurement can alter a system, create correlations, or suppress interference.
+
+The measurement problem is about the status of definite outcomes in the quantum description.
+
+For the first issue, see [What Is the Observer Effect in Quantum Mechanics?](/physics/quantum/observer-effect/).
+
+## What Does Decoherence Explain?
+
+Real measuring devices are not isolated.
+
+They interact constantly with air molecules, photons, vibrations, electronics, and the rest of the environment.
+
+Those interactions rapidly spread information about different alternatives into many environmental degrees of freedom. The apparatus and environment become entangled with the measured system.
+
+As that happens, interference between macroscopically different alternatives becomes extraordinarily difficult to observe locally.
+
+This process is called **decoherence**.
+
+Decoherence is a major part of the explanation for why large objects do not normally display obvious quantum interference in everyday life. It helps explain why certain stable, effectively classical records emerge and why the different alternatives behave, for practical purposes, much more like separate possibilities than a clean laboratory superposition.
+
+That is a real physical mechanism, not a philosophical slogan.
+
+## What Decoherence Does Not Explain by Itself
+
+Decoherence does not simply erase all but one term from the total quantum state.
+
+In the underlying unitary description, the different system-apparatus-environment alternatives can still all be present in the full state, even though interference between them is suppressed for practical observations.
+
+So decoherence helps answer:
+
+> Why do the alternatives stop visibly interfering like a clean microscopic superposition?
+
+It does not, by itself, answer:
+
+> Why is this one particular outcome the result I record?
+
+That remaining question is exactly why physicists and philosophers still discuss different approaches to the measurement problem.
+
+Saying “decoherence solved everything” skips an important step.
+
+## Do Physicists Agree on the Answer?
+
+They agree extremely well on a large body of experimental predictions.
+
+They do **not** all agree on one unique account of what the quantum state and measurement process mean.
+
+Some approaches use a collapse or state-reduction rule as an essential part of the description. Some theories make collapse a real physical process. Some keep only unitary evolution and interpret the resulting quantum state differently. Other approaches add additional physical variables or structure.
+
+This page does not need to choose among them.
+
+The scientifically important distinction is:
+
+### Experimental prediction
+
+Quantum mechanics gives tested probabilities for measurement outcomes and correctly predicts interference, spectra, correlations, and many other effects.
+
+### Textbook measurement rule
+
+Introductory formulations often tell us to update the state after a definite outcome is obtained.
+
+### Interpretation or modified theory
+
+Different foundational approaches give different accounts of what that state update means physically—or whether a fundamental collapse occurs at all.
+
+Treating one of those accounts as if it were the only thing “quantum mechanics says” would hide the actual open conceptual issue.
+
+## Is This Just a Philosophical Problem?
+
+Not in the sense of being meaningless or detached from physics.
+
+The measurement problem comes directly from taking the mathematical structure of quantum mechanics seriously and asking how it applies to measuring devices.
+
+It has motivated work on decoherence, quantum information, tests of collapse models, macroscopic quantum systems, and the foundations of statistical predictions.
+
+At the same time, many ordinary laboratory calculations do not require a physicist to settle the issue first. You can correctly calculate an atomic spectrum or the outcome probabilities of an experiment while remaining neutral about the ultimate interpretation of the wavefunction.
+
+That is one reason the measurement problem can feel strange: quantum mechanics is extraordinarily successful as a predictive theory even while there is disagreement about the best account of what the measurement process means.
+
+## One Thing to Remember
+
+**The quantum measurement problem is not “measurement disturbs the particle.” It is the problem of connecting ordinary quantum evolution, which can produce a superposition of correlated outcomes, with the definite outcomes that experiments record.**
+
+Decoherence is essential to understanding why interference between macroscopic alternatives disappears in practice, but it does not by itself select one unique result.
+
+## Go Deeper
+
+If the word *observer* is what first made this topic confusing, start with:
+
+[What Is the Observer Effect in Quantum Mechanics?](/physics/quantum/observer-effect/)
+
+The next useful step after this page is to study decoherence in its own right: how environmental entanglement suppresses observable interference without requiring a conscious observer.
+
+## Related Questions
+
+- Why does a quantum measurement give one result?
+- Is wavefunction collapse a real physical process?
+- Does decoherence solve the measurement problem?
+- Why can a measuring device also be treated as a quantum system?
+- Is the Copenhagen interpretation the only interpretation of quantum mechanics?
+- What is the observer effect?
+
+## Related Pages
+
+- [What Is the Observer Effect in Quantum Mechanics?](/physics/quantum/observer-effect/)
+
