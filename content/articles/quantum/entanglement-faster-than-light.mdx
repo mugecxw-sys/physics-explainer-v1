@@ -1,8 +1,8 @@
 ---
 title: "Why Can't Quantum Entanglement Be Used for Faster-Than-Light Communication?"
-description: "Entanglement creates striking correlations, but it does not let either observer control a message sent faster than light."
+description: "Entanglement creates stronger-than-classical correlations, but it does not let Alice choose Bob's local result or send a controllable message faster than light."
 slug: entanglement-faster-than-light
-topic: Quantum Physics
+topic: "Quantum Physics"
 datePublished: "2026-09-20"
 dateModified: "2026-09-20"
 reviewedBy: null
@@ -13,35 +13,268 @@ related: []
 next: null
 featured: true
 sources:
-  - title: "The Nobel Prize in Physics 2022 — Popular information"
-    url: "https://www.nobelprize.org/prizes/physics/2022/popular-information/"
-    publisher: Nobel Prize Outreach
+  - title: "Stanford Encyclopedia of Philosophy — Bell's Theorem"
+    url: "https://plato.stanford.edu/entries/bell-theorem/"
+    publisher: "Stanford Encyclopedia of Philosophy"
+  - title: "MIT OpenCourseWare — Quantum Complexity Theory"
+    url: "https://ocw.mit.edu/courses/6-845-quantum-complexity-theory-fall-2010/"
+    publisher: "MIT OpenCourseWare"
+  - title: "Nobel Prize in Physics 2022"
+    url: "https://www.nobelprize.org/prizes/physics/2022/press-release/"
+    publisher: "Nobel Prize"
+  - title: "University of Rochester — The no communication theorem"
+    url: "https://astro.pas.rochester.edu/~aquillen/phy256/lectures/QI_B.pdf"
+    publisher: "University of Rochester"
 ---
 
 <ShortAnswer>
-Entangled measurements can be correlated across large distances, but each local result is individually unpredictable. Because neither side can choose its result, neither side can encode a controllable message in the correlation.
+Entangled particles can show correlations that no ordinary local hidden-variable model can reproduce. Those correlations can remain even when the particles are far apart.
+
+But a correlation is not the same thing as a message.
+
+If Alice and Bob share an entangled pair, Alice cannot choose the result she gets when she measures her particle. Bob's local results are also random. Most importantly, Bob's statistics do not change in a way that tells him whether Alice measured, what basis she chose, or what result she obtained.
+
+The unusual correlation becomes visible only when Alice and Bob later compare their records. That comparison requires an ordinary classical communication channel, limited by the speed of light.
+
+This is the practical content of the **no-signalling principle**.
 </ShortAnswer>
+## Why Entanglement Looks Like Instant Communication
 
-## Correlation is not communication
+Take a simple entangled pair.
 
-Two observers can later compare their records and discover a pattern stronger than classical physics allows. Before that comparison, each observer sees a random-looking sequence. A pattern visible only after ordinary communication cannot itself carry a faster-than-light message.
+Alice receives one particle. Bob receives the other. They travel far apart and perform measurements.
 
-## Why choosing the measurement does not solve it
+When Alice and Bob later compare their data, they can find correlations that are stronger than any theory satisfying the relevant Bell-local assumptions can reproduce.
 
-Changing which measurement is performed affects the joint statistics that appear when both data sets are compared. It does not produce a locally readable signal telling the distant observer what choice was made.
+That part is real. Bell-inequality experiments have repeatedly confirmed the quantum predictions, and the 2022 Nobel Prize in Physics recognized experiments with entangled photons and violations of Bell inequalities.
 
-<VisualExplanation title="Two local records, one later comparison">
-  Each side receives an unpredictable local result. The entanglement becomes evident when the two records are brought together through a normal communication channel.
-</VisualExplanation>
+So why not use the correlation to transmit a bit?
 
-## What the distant observer can see
+It is tempting to reason like this:
 
-The distant observer cannot distinguish, from local data alone, whether a measurement was performed elsewhere or which setting was chosen. There is no controllable change that can be read as a bit of information.
+1. Alice measures her particle.
+2. Her result is correlated with Bob's.
+3. Therefore Alice's measurement must instantly set something at Bob's location.
+4. Bob should be able to read that change.
+5. Message sent faster than light.
 
-<CommonMisconception>
-“The particles communicate instantly” is a tempting story, but it suggests a usable signal that the experiment does not provide. Entanglement is better described through joint predictions than through hidden messages exchanged between particles.
-</CommonMisconception>
+The failure is at step 4.
 
-## One thing to remember
+Bob cannot read Alice's choice from his local data.
 
-Entanglement gives nonclassical correlations, but communication requires a controllable local signal—and entanglement does not provide one.
+## The First Barrier: Alice Cannot Choose Her Outcome
+
+Suppose Alice and Bob share a pair whose measurements, in a suitable common basis, are perfectly correlated.
+
+Alice wants to send one classical bit:
+
+- 0 means “no”
+- 1 means “yes”
+
+A communication system needs a controllable input. Alice must be able to make some physical choice that changes what Bob receives.
+
+But if Alice simply measures her half of an entangled pair, she does not get to choose the outcome.
+
+She may get 0.
+
+She may get 1.
+
+Quantum mechanics gives probabilities for those outcomes, but Alice cannot force a specific one on demand.
+
+So she cannot use the raw measurement result like a telegraph key.
+
+If she wants to send “1,” she cannot simply command:
+
+> Give me the result 1 so that Bob receives 1.
+
+The outcome is not under her control.
+
+That already blocks the most obvious faster-than-light scheme.
+
+## The Second Barrier: Bob's Local Results Look Random
+
+The more important point is what Bob can see before Alice contacts him.
+
+Bob measures many particles from many entangled pairs.
+
+His record might look like:
+
+```text
+1, 0, 1, 1, 0, 0, 1, 0, ...
+```
+
+To Bob alone, this sequence looks random.
+
+Suppose Alice measures all of her particles.
+
+Bob's local sequence still has the same probability distribution.
+
+Suppose Alice does not measure them yet.
+
+Bob's local sequence still has the same probability distribution.
+
+Suppose Alice chooses one measurement basis rather than another.
+
+Again, Bob cannot look only at his own list and tell which choice she made.
+
+This is the heart of the no-communication result.
+
+Alice's local actions can change the **joint correlations** that will be found when the two data sets are compared. They do not create a locally readable change in Bob's statistics that he can use as a message.
+
+## A Correlation Is Not a Signal
+
+This distinction is easier to see with a non-quantum example, even though the quantum correlations themselves are not classical.
+
+Take two sealed envelopes prepared together. One contains a red card and the other a blue card. Alice takes one envelope and Bob takes the other.
+
+When Alice opens hers and sees red, she immediately knows Bob has blue.
+
+But Alice did not send that information to Bob by opening her envelope.
+
+Bob's card did not become readable in a new way. He still has to open his own envelope, and nothing Alice does tells him which message she wants to transmit.
+
+Entanglement is much more subtle than pre-packed colored cards. Bell experiments rule out broad classes of local hidden-variable explanations of that kind.
+
+Still, the analogy highlights one useful point:
+
+> **Knowing that two results are correlated is not enough to create a communication channel.**
+
+Communication requires a controllable choice at one end and a detectable statistical change at the other.
+
+Entanglement alone does not provide that.
+
+## What If Alice Changes How She Measures?
+
+This is the more serious version of the idea.
+
+Perhaps Alice cannot choose her outcome, but she can choose **what measurement to perform**.
+
+Could she encode:
+
+- basis A = 0
+- basis B = 1
+
+and let Bob infer her basis from his particle?
+
+Quantum mechanics still says no.
+
+Changing Alice's local measurement can change the correlations that Alice and Bob will see after they compare their results.
+
+But Bob's reduced local statistics remain the same.
+
+In plain English:
+
+> Alice can change the pattern that exists **between the two records**, but she cannot turn that pattern into a visible change in Bob's record alone.
+
+Mathematically, this is expressed by the **no-communication theorem**: local operations on Alice's side do not let her change Bob's locally observable state in a way that transmits a controllable signal.
+
+That is stronger than merely saying, “Alice's outcome is random.”
+
+Even clever choices of local quantum operations cannot turn ordinary entanglement by itself into a faster-than-light transmitter.
+
+## When Do the Strange Correlations Become Visible?
+
+After Alice and Bob compare their records.
+
+Suppose each has thousands of measurement results.
+
+Bob's list by itself looks random.
+
+Alice's list by itself also looks random.
+
+Then Alice sends Bob information about:
+
+- which measurement setting she used
+- which trial corresponds to which
+- or her actual measurement results
+
+Bob lines the two lists up.
+
+Only then can they calculate the correlations.
+
+The comparison may reveal a Bell-inequality violation—something impossible for the relevant class of local hidden-variable models.
+
+But the comparison required ordinary information to travel from Alice to Bob, or from both of them to a third location.
+
+That classical message cannot travel faster than light.
+
+So the entanglement gives them remarkable correlations, but it does not replace the classical communication channel needed to reveal or use those correlations as a message.
+
+## What Does “Instantaneous” Mean Here?
+
+Popular explanations often say that entangled particles “affect each other instantly.”
+
+That wording can create more confusion than it solves.
+
+Quantum theory predicts correlations between measurement outcomes at spacelike separation. Those correlations violate Bell inequalities, so they cannot be reproduced by the simple picture in which each particle carries a complete set of local pre-existing answers for every possible measurement.
+
+But experiments do not show a controllable physical signal racing from Alice to Bob.
+
+There is also no unique relativistic definition of which of two spacelike-separated measurements happened first. Different inertial frames can disagree about their time order.
+
+For that reason, saying “Alice's measurement instantaneously caused Bob's result” adds an interpretation that the observable no-signalling facts do not require.
+
+A safer statement is:
+
+> **Entanglement produces nonclassical correlations between spacelike-separated measurement results, while preserving the impossibility of controllable faster-than-light signalling.**
+
+## No-Signalling Does Not Mean Entanglement Is Ordinary
+
+It would also be wrong to swing too far in the other direction and say:
+
+> Nothing interesting is happening. The particles just had matching answers all along.
+
+Bell's theorem is precisely why that simple explanation fails under the theorem's assumptions.
+
+Quantum correlations can violate Bell inequalities. Experiments with entangled particles have observed those violations.
+
+So two facts have to be held together:
+
+1. **The correlations are genuinely nonclassical.**
+2. **They cannot be exploited as a faster-than-light communication channel.**
+
+The second fact does not make the first one disappear.
+
+## What About Quantum Teleportation?
+
+Quantum teleportation sounds like an obvious loophole because it uses entanglement to transfer a quantum state.
+
+But teleportation still requires classical communication.
+
+In the standard protocol, Alice performs a joint measurement and obtains a classical result. Bob cannot reconstruct the intended state correctly until Alice sends him the necessary classical information.
+
+Those classical bits obey the ordinary speed limit.
+
+So quantum teleportation does not transmit usable information faster than light either.
+
+Entanglement is a resource in the protocol, but entanglement alone is not the message channel.
+
+## One Thing to Remember
+
+**Entanglement can create correlations that are stronger than classical local explanations allow, but Alice cannot control her local result and Bob cannot detect Alice's choice from his local data alone.**
+
+To turn the correlation into usable information, Alice and Bob must compare records through an ordinary classical channel.
+
+That is why entanglement does not provide faster-than-light communication.
+
+## Go Deeper
+
+The next useful question is not “How fast does the entanglement signal travel?” but:
+
+> What exactly does Bell's theorem rule out, and what does it leave open?
+
+That topic requires more care than the simple phrase “spooky action at a distance.”
+
+## Related Questions
+
+- What does quantum entanglement actually correlate?
+- Does entanglement violate relativity?
+- What does Bell's theorem prove?
+- Is an entangled measurement result truly random?
+- Why does quantum teleportation require classical communication?
+- What is the no-signalling principle?
+
+## Related Pages
+
+- [Quantum Topic Hub](/topics/quantum/)
+
