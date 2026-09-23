@@ -46,8 +46,7 @@ export type AudioEpisode = {
   description: string;
   cluster: string;
   audioUrl: string;
-  chapters: { time: string; title: string }[];
-  transcript: string;
-  relatedArticles: string[];
+  chapters: { title: string; time?: string }[];
+  relatedArticles: { title: string; href: string }[];
   sources: Source[];
 };

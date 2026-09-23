@@ -11,6 +11,7 @@ const expected = [
   "physics/quantum/observer-effect/index.html", "physics/quantum/measurement-problem/index.html",
   "physics/quantum/entanglement-faster-than-light/index.html", "physics/relativity/time-dilation/index.html",
   "physics/atomic/electron-fall-into-nucleus/index.html", "physics/atomic/atoms-empty-space/index.html",
+  "audio/quantum-measurement/index.html", "audio/quantum/quantum-measurement.mp3",
   "sitemap.xml", "robots.txt", "_headers",
 ];
 const forbidden = [
@@ -54,7 +55,7 @@ for (const relativePath of forbidden) {
 
 const sitemap = readFileSync(path.join(outDir, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-if (sitemapUrls.length !== 17) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
+if (sitemapUrls.length !== 18) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
 if (new Set(sitemapUrls).size !== sitemapUrls.length) throw new Error("Sitemap contains duplicate URLs");
 for (const url of sitemapUrls) {
   if (!existsSync(outputFileForUrl(url))) throw new Error(`Sitemap URL has no exported page: ${url}`);
@@ -103,7 +104,7 @@ for (const url of sitemapUrls) {
 }
 
 const homepage = readFileSync(path.join(outDir, "index.html"), "utf8");
-if (homepage.includes("Featured Audio") || homepage.includes("Listen to the episode")) throw new Error("Empty audio module rendered on homepage");
+if (!homepage.includes("Featured Audio") || !homepage.includes('href="/audio/quantum-measurement/"')) throw new Error("Featured Audio is missing from homepage");
 if (!homepage.includes('href="/topics/"')) throw new Error("Core navigation is not a real link");
 const homeSchemas = schemaBlocks(homepage, "Homepage");
 if (!homeSchemas.some((schema) => schema["@type"] === "WebSite") || !homeSchemas.some((schema) => schema["@type"] === "Organization")) throw new Error("Homepage schemas are missing");
@@ -118,6 +119,21 @@ const articleSchema = articleSchemas.find((schema) => schema["@type"] === "Artic
 if (!articleSchemas.some((schema) => schema["@type"] === "BreadcrumbList") || !articleSchema) throw new Error("Article schemas are incomplete");
 if (articleSchema.mainEntityOfPage !== articleUrl) throw new Error("Article schema canonical URL is incorrect");
 for (const property of ["author", "reviewedBy", "image"]) if (property in articleSchema) throw new Error(`Empty ${property} must not render in Article schema`);
+
+const audioHtml = readFileSync(path.join(outDir, "audio", "quantum-measurement", "index.html"), "utf8");
+if (!audioHtml.includes("Why Quantum Physics Gets Weird When You Measure It")) throw new Error("Audio page heading is missing");
+if (!audioHtml.includes('src="/audio/quantum/quantum-measurement.mp3"')) throw new Error("Audio player source is incorrect");
+if (!audioHtml.includes('preload="metadata"')) throw new Error("Audio player must preload metadata only");
+if (audioHtml.includes('autoplay') || audioHtml.includes('loop')) throw new Error("Audio player must not autoplay or loop");
+if (!audioHtml.includes('"@type":"AudioObject"')) throw new Error("AudioObject schema is missing");
+if (audioHtml.includes('"duration"') || audioHtml.includes('"author"') || audioHtml.includes('"reviewedBy"') || audioHtml.includes('"image"')) throw new Error("Audio schema contains an unsupported empty field");
+for (const href of ["/physics/quantum/observer-effect/", "/physics/quantum/measurement-problem/", "/physics/quantum/entanglement-faster-than-light/"]) {
+  if (!audioHtml.includes(`href="${href}"`)) throw new Error(`Audio related reading link is missing: ${href}`);
+}
+for (const articlePath of ["observer-effect", "measurement-problem", "entanglement-faster-than-light"]) {
+  const html = readFileSync(path.join(outDir, "physics", "quantum", articlePath, "index.html"), "utf8");
+  if (!html.includes('href="/audio/quantum-measurement/"')) throw new Error(`Audio listening link is missing from ${articlePath}`);
+}
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, "utf8");

@@ -24,6 +24,18 @@ function Relations({ article }: { article: ArticleDocument }) {
   );
 }
 
+function ListeningNote({ article }: { article: ArticleDocument }) {
+  const listenableSlugs = new Set(["observer-effect", "measurement-problem", "entanglement-faster-than-light"]);
+  if (article.cluster !== "quantum" || !listenableSlugs.has(article.frontmatter.slug)) return null;
+
+  return (
+    <aside className="article-listen-note" aria-label="Audio explainer">
+      <p className="eyebrow">Prefer listening?</p>
+      <p>Hear these ideas together in our audio explainer: <Link href="/audio/quantum-measurement/">Why Quantum Physics Gets Weird When You Measure It <span aria-hidden="true">→</span></Link></p>
+    </aside>
+  );
+}
+
 export function ArticleLayout({ article, children }: { article: ArticleDocument; children: ReactNode }) {
   const topic = getTopicByCluster(article.cluster);
   const { frontmatter } = article;
@@ -51,6 +63,7 @@ export function ArticleLayout({ article, children }: { article: ArticleDocument;
           </div>
         </header>
         <div className="article-body">{children}</div>
+        <ListeningNote article={article} />
         {frontmatter.sources && frontmatter.sources.length > 0 && (
           <section className="article-support sources" aria-labelledby="sources-heading">
             <h2 id="sources-heading">Sources</h2>

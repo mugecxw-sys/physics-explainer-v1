@@ -49,10 +49,10 @@ export default function HomePage() {
 
       {featuredAudio && (
         <section className="section shell" aria-labelledby="listen-heading">
-          <p className="eyebrow">Listen</p>
+          <p className="eyebrow">Featured Audio</p>
           <h2 id="listen-heading">{featuredAudio.title}</h2>
           <p>{featuredAudio.description}</p>
-          <Link href={`/audio/${featuredAudio.slug}/`}>Listen to the episode</Link>
+          <Link className="text-link" href={`/audio/${featuredAudio.slug}/`}>Listen <span aria-hidden="true">→</span></Link>
         </section>
       )}
 
