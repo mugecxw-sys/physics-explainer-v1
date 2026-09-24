@@ -10,6 +10,7 @@ const expected = [
   "editorial-policy/index.html", "scientific-review/index.html", "sources/index.html", "privacy/index.html",
   "physics/quantum/observer-effect/index.html", "physics/quantum/measurement-problem/index.html",
   "physics/quantum/entanglement-faster-than-light/index.html", "physics/relativity/time-dilation/index.html",
+  "physics/relativity/speed-of-light-same-for-everyone/index.html",
   "physics/atomic/electron-fall-into-nucleus/index.html", "physics/atomic/atoms-empty-space/index.html",
   "audio/quantum-measurement/index.html", "audio/quantum/quantum-measurement.mp3",
   "sitemap.xml", "robots.txt", "_headers",
@@ -55,7 +56,7 @@ for (const relativePath of forbidden) {
 
 const sitemap = readFileSync(path.join(outDir, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-if (sitemapUrls.length !== 18) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
+if (sitemapUrls.length !== 19) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
 if (new Set(sitemapUrls).size !== sitemapUrls.length) throw new Error("Sitemap contains duplicate URLs");
 for (const url of sitemapUrls) {
   if (!existsSync(outputFileForUrl(url))) throw new Error(`Sitemap URL has no exported page: ${url}`);
@@ -63,8 +64,8 @@ for (const url of sitemapUrls) {
   if (canonicalFromHtml(html, url) !== url) throw new Error(`Sitemap URL and canonical disagree: ${url}`);
 }
 for (const relativePath of forbidden.filter((item) => item.startsWith("physics/"))) {
-  const slug = relativePath.split("/").at(-2);
-  if (slug && sitemap.includes(slug)) throw new Error(`Unpublished slug found in sitemap: ${slug}`);
+  const forbiddenPath = `/${relativePath.replaceAll("\\", "/").replace(/index\.html$/, "")}`;
+  if (sitemapUrls.some((url) => new URL(url).pathname === forbiddenPath)) throw new Error(`Unpublished URL found in sitemap: ${forbiddenPath}`);
 }
 
 const headers = readFileSync(path.join(outDir, "_headers"), "utf8");
@@ -119,6 +120,30 @@ const articleSchema = articleSchemas.find((schema) => schema["@type"] === "Artic
 if (!articleSchemas.some((schema) => schema["@type"] === "BreadcrumbList") || !articleSchema) throw new Error("Article schemas are incomplete");
 if (articleSchema.mainEntityOfPage !== articleUrl) throw new Error("Article schema canonical URL is incorrect");
 for (const property of ["author", "reviewedBy", "image"]) if (property in articleSchema) throw new Error(`Empty ${property} must not render in Article schema`);
+
+const lightSpeedPath = "/physics/relativity/speed-of-light-same-for-everyone/";
+const lightSpeedHtml = readFileSync(path.join(outDir, "physics", "relativity", "speed-of-light-same-for-everyone", "index.html"), "utf8");
+if (!lightSpeedHtml.includes("<h1>Why Is the Speed of Light the Same for Everyone?</h1>")) throw new Error("Speed of light article H1 is missing or duplicated");
+if (!lightSpeedHtml.includes("<h2>Short Answer</h2>")) throw new Error("Speed of light Short Answer is missing");
+if (!lightSpeedHtml.includes('class="equation-block" role="math"')) throw new Error("Accessible velocity equations are missing");
+if (/\\frac|Visual Specification|Panel A — Observer A|Do not draw/.test(lightSpeedHtml)) throw new Error("Unrendered math or implementation notes appear in the article");
+if (!lightSpeedHtml.includes('<svg viewBox="0 0 760 950" role="img"') || !lightSpeedHtml.includes("Two observers measure the same light speed")) throw new Error("Accessible static SVG figure is missing");
+if (!lightSpeedHtml.includes("A and B do not share one absolute time grid") || !lightSpeedHtml.includes("Lorentz transformations")) throw new Error("SVG explanatory labels are missing");
+if (!lightSpeedHtml.includes('href="/physics/relativity/time-dilation/"')) throw new Error("Speed of light to Time Dilation link is missing");
+if (!lightSpeedHtml.includes('rel="canonical" href="https://physicsplainly.com/physics/relativity/speed-of-light-same-for-everyone/"')) throw new Error("Speed of light canonical is incorrect");
+if ((lightSpeedHtml.match(/<h1[\s>]/g) ?? []).length !== 1) throw new Error("Speed of light page must contain exactly one H1");
+if (!lightSpeedHtml.includes("OpenStax") || !lightSpeedHtml.includes("MIT OpenCourseWare") || !lightSpeedHtml.includes("Einstein Online") || !lightSpeedHtml.includes("Stanford Encyclopedia of Philosophy") || !lightSpeedHtml.includes("NIST")) throw new Error("Speed of light sources are missing");
+if (/name="robots" content="[^"']*noindex/i.test(lightSpeedHtml)) throw new Error("Speed of light page must not be noindex");
+const lightSpeedSchemas = schemaBlocks(lightSpeedHtml, "Speed of light article");
+const lightSpeedSchema = lightSpeedSchemas.find((schema) => schema["@type"] === "Article");
+if (!lightSpeedSchemas.some((schema) => schema["@type"] === "BreadcrumbList") || !lightSpeedSchema) throw new Error("Speed of light schemas are incomplete");
+if (lightSpeedSchema.mainEntityOfPage !== `${production ? productionOrigin : new URL(sitemapUrls[0]).origin}${lightSpeedPath}`) throw new Error("Speed of light Article schema URL is incorrect");
+for (const property of ["author", "reviewedBy", "image"]) if (property in lightSpeedSchema) throw new Error(`Empty speed of light ${property} must not render in Article schema`);
+
+const timeDilationHtml = readFileSync(path.join(outDir, "physics", "relativity", "time-dilation", "index.html"), "utf8");
+if (!timeDilationHtml.includes(`href="${lightSpeedPath}"`)) throw new Error("Time Dilation reverse link is missing");
+const relativityHubHtml = readFileSync(path.join(outDir, "topics", "relativity", "index.html"), "utf8");
+if (!relativityHubHtml.includes(`href="${lightSpeedPath}"`) || !relativityHubHtml.includes("Why Is the Speed of Light the Same for Everyone?")) throw new Error("Speed of light article is missing from Relativity Topic Hub");
 
 const audioHtml = readFileSync(path.join(outDir, "audio", "quantum-measurement", "index.html"), "utf8");
 if (!audioHtml.includes("Why Quantum Physics Gets Weird When You Measure It")) throw new Error("Audio page heading is missing");
