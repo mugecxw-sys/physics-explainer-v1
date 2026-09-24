@@ -5,6 +5,7 @@ import { StructuredData } from "@/components/structured-data";
 import type { ArticleDocument } from "@/lib/content";
 import { articleSchema, breadcrumbSchema } from "@/lib/schema";
 import { getTopicByCluster } from "@/content/topics/topics";
+import { audioEpisodes } from "@/content/audio/episodes";
 
 function Relations({ article }: { article: ArticleDocument }) {
   const { prerequisites = [], related = [], next } = article.frontmatter;
@@ -25,13 +26,14 @@ function Relations({ article }: { article: ArticleDocument }) {
 }
 
 function ListeningNote({ article }: { article: ArticleDocument }) {
-  const listenableSlugs = new Set(["observer-effect", "measurement-problem", "entanglement-faster-than-light"]);
-  if (article.cluster !== "quantum" || !listenableSlugs.has(article.frontmatter.slug)) return null;
+  const articleHref = `/physics/${article.cluster}/${article.frontmatter.slug}/`;
+  const episode = audioEpisodes.find((item) => item.relatedArticles.some((related) => related.href === articleHref));
+  if (!episode) return null;
 
   return (
     <aside className="article-listen-note" aria-label="Audio explainer">
       <p className="eyebrow">Prefer listening?</p>
-      <p>Hear these ideas together in our audio explainer: <Link href="/audio/quantum-measurement/">Why Quantum Physics Gets Weird When You Measure It <span aria-hidden="true">→</span></Link></p>
+      <p>Hear these ideas together in our audio explainer: <Link href={`/audio/${episode.slug}/`}>{episode.title} <span aria-hidden="true">→</span></Link></p>
     </aside>
   );
 }

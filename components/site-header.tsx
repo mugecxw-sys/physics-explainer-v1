@@ -9,7 +9,7 @@ export function SiteHeader() {
         <Link className="wordmark" href="/">{siteConfig.name}</Link>
         <nav aria-label="Primary navigation">
           <Link href="/topics/">Topics</Link>
-          {audioEpisodes.length >= 2 && <Link href="/audio/">Audio</Link>}
+          {audioEpisodes.length >= 3 && <Link href="/audio/">Audio</Link>}
           <Link href="/about/">About</Link>
         </nav>
       </div>

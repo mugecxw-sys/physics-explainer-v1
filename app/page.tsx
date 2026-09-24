@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site-config";
 import { getAllArticles } from "@/lib/content";
 
 export default function HomePage() {
-  const featuredAudio = audioEpisodes[0];
+  const hasAudio = audioEpisodes.length > 0;
   const popular = getAllArticles().filter((article) => article.frontmatter.featured).slice(0, 6);
 
   return (
@@ -47,12 +47,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {featuredAudio && (
-        <section className="section shell" aria-labelledby="listen-heading">
-          <p className="eyebrow">Featured Audio</p>
-          <h2 id="listen-heading">{featuredAudio.title}</h2>
-          <p>{featuredAudio.description}</p>
-          <Link className="text-link" href={`/audio/${featuredAudio.slug}/`}>Listen <span aria-hidden="true">→</span></Link>
+      {hasAudio && (
+        <section className="section shell" aria-labelledby="audio-heading">
+          <div className="section-heading">
+            <p className="eyebrow">Listen</p>
+            <h2 id="audio-heading">Audio Explainers</h2>
+          </div>
+          <div className="topic-grid">
+            {audioEpisodes.map((episode) => (
+              <Link className="topic-link" href={`/audio/${episode.slug}/`} key={episode.slug}>
+                <span className="topic-number">Audio Explainer</span>
+                <h3>{episode.title}</h3>
+                <p>{episode.description}</p>
+                <span className="text-link">Listen <span aria-hidden="true">→</span></span>
+              </Link>
+            ))}
+          </div>
         </section>
       )}
 

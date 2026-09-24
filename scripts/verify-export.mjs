@@ -13,6 +13,7 @@ const expected = [
   "physics/relativity/speed-of-light-same-for-everyone/index.html",
   "physics/atomic/electron-fall-into-nucleus/index.html", "physics/atomic/atoms-empty-space/index.html",
   "audio/quantum-measurement/index.html", "audio/quantum/quantum-measurement.mp3",
+  "audio/time-dilation/index.html", "audio/relativity/moving-fast-changes-time.mp3",
   "sitemap.xml", "robots.txt", "_headers",
 ];
 const forbidden = [
@@ -56,7 +57,8 @@ for (const relativePath of forbidden) {
 
 const sitemap = readFileSync(path.join(outDir, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-if (sitemapUrls.length !== 19) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
+const exportOrigin = production ? productionOrigin : new URL(sitemapUrls[0]).origin;
+if (sitemapUrls.length !== 20) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
 if (new Set(sitemapUrls).size !== sitemapUrls.length) throw new Error("Sitemap contains duplicate URLs");
 for (const url of sitemapUrls) {
   if (!existsSync(outputFileForUrl(url))) throw new Error(`Sitemap URL has no exported page: ${url}`);
@@ -105,7 +107,12 @@ for (const url of sitemapUrls) {
 }
 
 const homepage = readFileSync(path.join(outDir, "index.html"), "utf8");
-if (!homepage.includes("Featured Audio") || !homepage.includes('href="/audio/quantum-measurement/"')) throw new Error("Featured Audio is missing from homepage");
+if (!homepage.includes('<h2 id="audio-heading">Audio Explainers</h2>') || !homepage.includes('href="/audio/quantum-measurement/"') || !homepage.includes('href="/audio/time-dilation/"')) throw new Error("Homepage Audio Explainers links are incomplete");
+if (homepage.includes('href="/audio/"')) throw new Error("Homepage links to an unpublished Audio Hub");
+const homepageAudioSection = homepage.match(/<section class="section shell" aria-labelledby="audio-heading">([\s\S]*?)<\/section>/);
+if (!homepageAudioSection || (homepageAudioSection[1].match(/class="topic-link"/g) ?? []).length !== 2) throw new Error("Homepage must show exactly two matching Audio Explainer cards");
+const homepageHeader = homepage.match(/<header class="site-header">([\s\S]*?)<\/header>/);
+if (!homepageHeader || homepageHeader[1].includes('href="/audio/"')) throw new Error("Header must not link to an unpublished Audio Hub");
 if (!homepage.includes('href="/topics/"')) throw new Error("Core navigation is not a real link");
 const homeSchemas = schemaBlocks(homepage, "Homepage");
 if (!homeSchemas.some((schema) => schema["@type"] === "WebSite") || !homeSchemas.some((schema) => schema["@type"] === "Organization")) throw new Error("Homepage schemas are missing");
@@ -130,7 +137,7 @@ if (/\\frac|Visual Specification|Panel A — Observer A|Do not draw/.test(lightS
 if (!lightSpeedHtml.includes('<svg viewBox="0 0 760 950" role="img"') || !lightSpeedHtml.includes("Two observers measure the same light speed")) throw new Error("Accessible static SVG figure is missing");
 if (!lightSpeedHtml.includes("A and B do not share one absolute time grid") || !lightSpeedHtml.includes("Lorentz transformations")) throw new Error("SVG explanatory labels are missing");
 if (!lightSpeedHtml.includes('href="/physics/relativity/time-dilation/"')) throw new Error("Speed of light to Time Dilation link is missing");
-if (!lightSpeedHtml.includes('rel="canonical" href="https://physicsplainly.com/physics/relativity/speed-of-light-same-for-everyone/"')) throw new Error("Speed of light canonical is incorrect");
+if (!lightSpeedHtml.includes(`rel="canonical" href="${exportOrigin}${lightSpeedPath}"`)) throw new Error("Speed of light canonical is incorrect");
 if ((lightSpeedHtml.match(/<h1[\s>]/g) ?? []).length !== 1) throw new Error("Speed of light page must contain exactly one H1");
 if (!lightSpeedHtml.includes("OpenStax") || !lightSpeedHtml.includes("MIT OpenCourseWare") || !lightSpeedHtml.includes("Einstein Online") || !lightSpeedHtml.includes("Stanford Encyclopedia of Philosophy") || !lightSpeedHtml.includes("NIST")) throw new Error("Speed of light sources are missing");
 if (/name="robots" content="[^"']*noindex/i.test(lightSpeedHtml)) throw new Error("Speed of light page must not be noindex");
@@ -159,6 +166,59 @@ for (const articlePath of ["observer-effect", "measurement-problem", "entangleme
   const html = readFileSync(path.join(outDir, "physics", "quantum", articlePath, "index.html"), "utf8");
   if (!html.includes('href="/audio/quantum-measurement/"')) throw new Error(`Audio listening link is missing from ${articlePath}`);
 }
+
+const timeAudioPath = "/audio/time-dilation/";
+const timeAudioHtml = readFileSync(path.join(outDir, "audio", "time-dilation", "index.html"), "utf8");
+const timeAudioFile = path.join(outDir, "audio", "relativity", "moving-fast-changes-time.mp3");
+if (!existsSync(timeAudioFile)) throw new Error("Audio 02 MP3 is missing from static export");
+if (readFileSync(timeAudioFile).byteLength > 25 * 1024 * 1024) throw new Error("Audio 02 MP3 exceeds Cloudflare Pages static asset limit");
+if (!timeAudioHtml.includes("<h1>Why Moving Fast Changes Time</h1>")) throw new Error("Audio 02 H1 is incorrect");
+if (!timeAudioHtml.includes('<span aria-current="page">Time Dilation</span>')) throw new Error("Audio 02 breadcrumb label is incorrect");
+if (!timeAudioHtml.includes('src="/audio/relativity/moving-fast-changes-time.mp3"') || !timeAudioHtml.includes('preload="metadata"')) throw new Error("Audio 02 player source or preload mode is incorrect");
+if (timeAudioHtml.includes("autoplay") || timeAudioHtml.includes("loop")) throw new Error("Audio 02 player must not autoplay or loop");
+for (const text of [
+  "If you chase a car, its speed relative to you changes.",
+  "This audio explainer connects the constant speed of light with time dilation",
+  "What you&#x27;ll understand",
+  "Why chasing light does not make it recede at c minus your speed",
+  "The Rule That Breaks Everyday Intuition",
+  "Why Light Doesn&#x27;t Add Speeds the Ordinary Way",
+  "If Light Doesn&#x27;t Change, Something Else Must",
+  "The Light Clock",
+  "You Never Feel Your Own Time Slow Down",
+  "How Can Both Observers Say the Other Clock Is Slow?",
+  "The Twin Paradox Without the Drama",
+  "This Is Not Just Something We See",
+  "What You Should Actually Remember",
+  "This audio combines two related Physics, Plainly.",
+  "It is written for listening rather than as a word-for-word reading of either article.",
+]) {
+  if (!timeAudioHtml.includes(text)) throw new Error(`Audio 02 page is missing expected content: ${text}`);
+}
+const chaptersMatch = timeAudioHtml.match(/<ol class="chapters">([\s\S]*?)<\/ol>/);
+if (!chaptersMatch || /<time\b/.test(chaptersMatch[1])) throw new Error("Audio 02 chapters must not contain invented timestamps");
+const relatedMatch = timeAudioHtml.match(/<section aria-labelledby="related-reading-heading">([\s\S]*?)<\/section>/);
+if (!relatedMatch || !relatedMatch[1].includes('href="/physics/relativity/time-dilation/"') || !relatedMatch[1].includes('href="/physics/relativity/speed-of-light-same-for-everyone/"') || (relatedMatch[1].match(/class="question-row"/g) ?? []).length !== 2) throw new Error("Audio 02 must link to exactly its two related articles");
+if (!timeAudioHtml.includes("A plain-English audio explanation of why the speed of light stays invariant") || !timeAudioHtml.includes("Sources")) throw new Error("Audio 02 description or sources are missing");
+const sourceList = timeAudioHtml.match(/<section class="article-support sources"[\s\S]*?<ol>([\s\S]*?)<\/ol>/);
+if (!sourceList || (sourceList[1].match(/<li>/g) ?? []).length !== 7 || /href="http:\/\//.test(sourceList[1])) throw new Error("Audio 02 Sources must contain its seven HTTPS references");
+if (timeAudioHtml.includes("TTS SCRIPT") || timeAudioHtml.includes("PRODUCTION NOTES")) throw new Error("Audio 02 production script text leaked into the public page");
+if (!timeAudioHtml.includes(`rel="canonical" href="${exportOrigin}${timeAudioPath}"`)) throw new Error("Audio 02 canonical is incorrect");
+const timeAudioSchemas = schemaBlocks(timeAudioHtml, "Audio 02 page");
+if (!timeAudioSchemas.some((schema) => schema["@type"] === "BreadcrumbList")) throw new Error("Audio 02 BreadcrumbList schema is missing");
+if (!timeAudioSchemas.some((schema) => schema["@type"] === "WebSite") || !timeAudioSchemas.some((schema) => schema["@type"] === "Organization")) throw new Error("Audio 02 WebSite or Organization schema is missing");
+const timeAudioSchema = timeAudioSchemas.find((schema) => schema["@type"] === "AudioObject");
+if (!timeAudioSchema || timeAudioSchema.contentUrl !== `${exportOrigin}/audio/relativity/moving-fast-changes-time.mp3` || timeAudioSchema.encodingFormat !== "audio/mpeg") throw new Error("Audio 02 AudioObject data is incorrect");
+for (const property of ["author", "reviewedBy", "thumbnailUrl", "uploadDate", "duration"]) if (property in timeAudioSchema) throw new Error(`Unsupported empty AudioObject ${property} must not render`);
+if (homepage.includes('href="/audio/"') || existsSync(path.join(outDir, "audio", "index.html"))) throw new Error("Audio Hub must not be generated before it has content and approval");
+if (sitemapUrls.includes(`${exportOrigin}/audio/`)) throw new Error("Audio Hub must not appear in sitemap");
+for (const slug of ["time-dilation", "speed-of-light-same-for-everyone"]) {
+  const article = readFileSync(path.join(outDir, "physics", "relativity", slug, "index.html"), "utf8");
+  if (!article.includes('href="/audio/time-dilation/"')) throw new Error(`Audio 02 article listening link is missing from ${slug}`);
+}
+const sitemapMp3Urls = sitemapUrls.filter((url) => /\.mp3$/i.test(url));
+if (sitemapMp3Urls.length > 0) throw new Error("Sitemap must not contain MP3 assets");
+if (!sitemapUrls.includes(`${productionOrigin}${timeAudioPath}`)) throw new Error("Audio 02 page is missing from sitemap");
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, "utf8");

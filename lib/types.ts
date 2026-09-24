@@ -44,6 +44,10 @@ export type AudioEpisode = {
   slug: string;
   title: string;
   description: string;
+  breadcrumbLabel: string;
+  intro: string[];
+  whatYoullUnderstand: string;
+  aboutAudio: string[];
   cluster: string;
   audioUrl: string;
   chapters: { title: string; time?: string }[];

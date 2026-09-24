@@ -8,6 +8,7 @@ import { audioEpisodes } from "@/content/audio/episodes";
 import { pageMetadata } from "@/lib/metadata";
 import { absoluteUrl } from "@/lib/site-config";
 import { breadcrumbSchema } from "@/lib/schema";
+import { getTopicByCluster } from "@/content/topics/topics";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
@@ -30,10 +31,11 @@ export default async function AudioEpisodePage({ params }: PageProps) {
   if (!episode) notFound();
 
   const pagePath = `/audio/${episode.slug}/`;
+  const topic = getTopicByCluster(episode.cluster);
   const breadcrumbItems = [
     { label: "Home", href: "/" },
     { label: "Audio" },
-    { label: "Quantum Measurement" },
+    { label: episode.breadcrumbLabel },
   ];
   const audioSchema = {
     "@context": "https://schema.org",
@@ -54,20 +56,19 @@ export default async function AudioEpisodePage({ params }: PageProps) {
         <header className="audio-header">
           <p className="eyebrow">Audio Explainer</p>
           <h1>{episode.title}</h1>
-          <p className="audio-intro">Quantum measurement is often explained as if reality changes because someone looks at it. That is not what the physics requires.</p>
-          <p className="audio-intro">This audio explainer connects three closely related ideas: what an “observer” really means in quantum mechanics, why measurement creates a deeper conceptual problem, and why quantum entanglement still cannot be used to send messages faster than light.</p>
+          {episode.intro.map((paragraph) => <p className="audio-intro" key={paragraph}>{paragraph}</p>)}
         </header>
 
         <section className="audio-player-panel" aria-label="Audio player">
           <p className="eyebrow">Audio Explainer</p>
-          <p>Quantum Physics</p>
+            <p>{topic?.title ?? episode.cluster}</p>
           <AudioPlayer src={episode.audioUrl} slug={episode.slug} title={`Audio player: ${episode.title}`} />
         </section>
 
         <div className="audio-copy">
           <section aria-labelledby="understand-heading">
             <h2 id="understand-heading">What you&apos;ll understand</h2>
-            <p>Why the word “observer” can be misleading, why conscious awareness is not required, and why a measurement creates a deeper conceptual problem. It also explains what decoherence does—and does not—settle, and why entanglement produces remarkable correlations without creating a faster-than-light message channel.</p>
+            <p>{episode.whatYoullUnderstand}</p>
           </section>
 
           <section aria-labelledby="chapters-heading">
@@ -88,7 +89,7 @@ export default async function AudioEpisodePage({ params }: PageProps) {
               {episode.relatedArticles.map((article) => (
                 <Link className="question-row" href={article.href} key={article.href}>
                   <span>{article.title}</span>
-                  <small>Quantum Physics</small>
+                  <small>{topic?.title ?? episode.cluster}</small>
                 </Link>
               ))}
             </div>
@@ -96,8 +97,7 @@ export default async function AudioEpisodePage({ params }: PageProps) {
 
           <section aria-labelledby="about-audio-heading">
             <h2 id="about-audio-heading">About this audio</h2>
-            <p>This audio combines several related Physics, Plainly. explainers into one continuous plain-English explanation. It is written for listening rather than as a word-for-word reading of the individual articles.</p>
-            <p>For the underlying explanations and sources, continue with the related reading above.</p>
+            {episode.aboutAudio.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </section>
         </div>
 
@@ -109,7 +109,7 @@ export default async function AudioEpisodePage({ params }: PageProps) {
             ))}
           </ol>
         </section>
-        <p className="parent-topic">Parent topic: <Link href="/topics/quantum/">Quantum Physics</Link></p>
+        {topic && <p className="parent-topic">Parent topic: <Link href={`/topics/${topic.slug}/`}>{topic.title}</Link></p>}
       </article>
     </>
   );
