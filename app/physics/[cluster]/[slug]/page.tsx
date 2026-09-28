@@ -30,8 +30,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: frontmatter.description,
       url: absoluteUrl(canonicalPath),
       siteName: siteConfig.name,
-      publishedTime: frontmatter.datePublished,
-      modifiedTime: frontmatter.dateModified,
+      ...(frontmatter.datePublished ? { publishedTime: frontmatter.datePublished } : {}),
+      ...(frontmatter.dateModified ? { modifiedTime: frontmatter.dateModified } : {}),
       ...(frontmatter.image ? { images: [{ url: absoluteUrl(frontmatter.image) }] } : {}),
     },
     twitter: {

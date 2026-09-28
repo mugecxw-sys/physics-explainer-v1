@@ -22,12 +22,12 @@ export function articleSchema(article: ArticleDocument) {
     "@id": absoluteUrl(`/physics/${article.cluster}/${frontmatter.slug}/#article`),
     headline: frontmatter.title,
     description: frontmatter.description,
-    datePublished: frontmatter.datePublished,
-    dateModified: frontmatter.dateModified,
     mainEntityOfPage: absoluteUrl(`/physics/${article.cluster}/${frontmatter.slug}/`),
     publisher: { "@type": "Organization", name: siteConfig.organization.name },
   };
 
+  if (frontmatter.datePublished) schema.datePublished = frontmatter.datePublished;
+  if (frontmatter.dateModified) schema.dateModified = frontmatter.dateModified;
   if (frontmatter.author?.name) {
     schema.author = {
       "@type": "Person",

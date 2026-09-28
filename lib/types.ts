@@ -19,8 +19,9 @@ export type ArticleFrontmatter = {
   description: string;
   slug: string;
   topic: string;
-  datePublished: string;
-  dateModified: string;
+  status?: "ready-for-review" | "published";
+  datePublished?: string;
+  dateModified?: string;
   author?: Person | null;
   reviewedBy?: Person | null;
   scientificReviewStatus?: "not-reviewed" | "reviewed";

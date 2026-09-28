@@ -10,7 +10,7 @@ const expected = [
   "editorial-policy/index.html", "scientific-review/index.html", "sources/index.html", "privacy/index.html",
   "physics/quantum/observer-effect/index.html", "physics/quantum/measurement-problem/index.html",
   "physics/quantum/entanglement-faster-than-light/index.html", "physics/relativity/time-dilation/index.html",
-  "physics/relativity/speed-of-light-same-for-everyone/index.html",
+  "physics/relativity/speed-of-light-same-for-everyone/index.html", "physics/relativity/simultaneity/index.html",
   "physics/atomic/electron-fall-into-nucleus/index.html", "physics/atomic/atoms-empty-space/index.html",
   "audio/quantum-measurement/index.html", "audio/quantum/quantum-measurement.mp3",
   "audio/time-dilation/index.html", "audio/relativity/moving-fast-changes-time.mp3",
@@ -58,7 +58,7 @@ for (const relativePath of forbidden) {
 const sitemap = readFileSync(path.join(outDir, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 const exportOrigin = production ? productionOrigin : new URL(sitemapUrls[0]).origin;
-if (sitemapUrls.length !== 20) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
+if (sitemapUrls.length !== 21) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
 if (new Set(sitemapUrls).size !== sitemapUrls.length) throw new Error("Sitemap contains duplicate URLs");
 for (const url of sitemapUrls) {
   if (!existsSync(outputFileForUrl(url))) throw new Error(`Sitemap URL has no exported page: ${url}`);
@@ -151,6 +151,34 @@ const timeDilationHtml = readFileSync(path.join(outDir, "physics", "relativity",
 if (!timeDilationHtml.includes(`href="${lightSpeedPath}"`)) throw new Error("Time Dilation reverse link is missing");
 const relativityHubHtml = readFileSync(path.join(outDir, "topics", "relativity", "index.html"), "utf8");
 if (!relativityHubHtml.includes(`href="${lightSpeedPath}"`) || !relativityHubHtml.includes("Why Is the Speed of Light the Same for Everyone?")) throw new Error("Speed of light article is missing from Relativity Topic Hub");
+
+const simultaneityPath = "/physics/relativity/simultaneity/";
+const simultaneityHtml = readFileSync(path.join(outDir, "physics", "relativity", "simultaneity", "index.html"), "utf8");
+if (!simultaneityHtml.includes("<h1>Why Is Simultaneity Relative?</h1>") || (simultaneityHtml.match(/<h1[\s>]/g) ?? []).length !== 1) throw new Error("Simultaneity H1 is missing or duplicated");
+if (!simultaneityHtml.includes('id="short-answer-heading">Short answer</h2>')) throw new Error("Simultaneity Short Answer is missing");
+for (const formula of ["Δt′ = γ(Δt − vΔx/c²)", "γ = 1 / √(1 − v²/c²)", "Δt = 0", "Δt′ = −γvΔx/c²"]) {
+  if (!simultaneityHtml.includes(formula)) throw new Error(`Simultaneity formula is missing: ${formula}`);
+}
+if (/\\frac|\\Delta|Visual Specification|Core layout|Avoid/.test(simultaneityHtml)) throw new Error("Raw math syntax or implementation-only visual specification leaked into the article");
+if (!simultaneityHtml.includes('<svg viewBox="0 0 760 780" role="img" aria-labelledby="simultaneity-title simultaneity-description">') || !simultaneityHtml.includes("Two frames assign different times to the same distant events") || !simultaneityHtml.includes("Coordinate-time slices—not visual arrival times or light-signal paths.")) throw new Error("Accessible static simultaneity SVG is missing or incomplete");
+if (!simultaneityHtml.includes("Signal delay is accounted for; it does not cause this disagreement.")) throw new Error("Simultaneity signal-travel distinction is missing");
+const siteCss = readFileSync(path.join("app", "globals.css"), "utf8");
+if (!/\.simultaneity-figure svg\s*\{[^}]*width:\s*100%[^}]*height:\s*auto/s.test(siteCss) || !siteCss.includes(".simultaneity-figure .simultaneity-label, .simultaneity-figure .simultaneity-note, .simultaneity-figure .simultaneity-footnote { font-size: 22px; }")) throw new Error("Simultaneity SVG responsive/mobile styles are missing");
+if (!simultaneityHtml.includes("Einstein synchronization") || !simultaneityHtml.includes("Timelike and lightlike causal order is preserved") || !simultaneityHtml.includes("Only spacelike-separated events can reverse coordinate order")) throw new Error("Simultaneity causality or clock-synchronization explanation is missing");
+for (const href of ["/physics/relativity/time-dilation/", "/physics/relativity/speed-of-light-same-for-everyone/"]) {
+  if (!simultaneityHtml.includes(`href="${href}"`)) throw new Error(`Simultaneity related article link is missing: ${href}`);
+}
+if (!simultaneityHtml.includes("OpenStax") || !simultaneityHtml.includes("Einstein Online") || !simultaneityHtml.includes("MIT OpenCourseWare") || !simultaneityHtml.includes("Stanford Encyclopedia of Philosophy")) throw new Error("Simultaneity sources are missing");
+if (!simultaneityHtml.includes(`rel="canonical" href="${exportOrigin}${simultaneityPath}"`)) throw new Error("Simultaneity canonical is incorrect");
+if (/name="robots" content="[^"']*noindex/i.test(simultaneityHtml)) throw new Error("Simultaneity must not be noindex");
+if (/property="article:published_time"|property="article:modified_time"|"datePublished"|"dateModified"|"author"|"reviewedBy"|"image"/.test(simultaneityHtml)) throw new Error("Simultaneity article contains unprovided publication, author, reviewer, or image metadata");
+const simultaneitySchemas = schemaBlocks(simultaneityHtml, "Simultaneity article");
+const simultaneitySchema = simultaneitySchemas.find((schema) => schema["@type"] === "Article");
+if (!simultaneitySchema || !simultaneitySchemas.some((schema) => schema["@type"] === "BreadcrumbList") || !simultaneitySchemas.some((schema) => schema["@type"] === "WebSite") || !simultaneitySchemas.some((schema) => schema["@type"] === "Organization")) throw new Error("Simultaneity article, breadcrumb, or site schemas are missing");
+if (simultaneitySchema.mainEntityOfPage !== `${exportOrigin}${simultaneityPath}` || simultaneitySchema.reviewedBy || simultaneitySchema.author || simultaneitySchema.image) throw new Error("Simultaneity Article schema URL or unsupported fields are incorrect");
+if (!sitemapUrls.includes(`${exportOrigin}${simultaneityPath}`)) throw new Error("Simultaneity article is missing from sitemap");
+if (!relativityHubHtml.includes(`href="${simultaneityPath}"`) || !relativityHubHtml.includes("Why Is Simultaneity Relative?")) throw new Error("Simultaneity is missing from Relativity Topic Hub");
+if (!timeDilationHtml.includes(`href="${simultaneityPath}"`)) throw new Error("Time Dilation natural reverse link to simultaneity is missing");
 
 const audioHtml = readFileSync(path.join(outDir, "audio", "quantum-measurement", "index.html"), "utf8");
 if (!audioHtml.includes("Why Quantum Physics Gets Weird When You Measure It")) throw new Error("Audio page heading is missing");

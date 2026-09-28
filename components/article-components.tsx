@@ -106,9 +106,66 @@ export function SpeedOfLightFigure() {
   );
 }
 
+export function SimultaneityFigure() {
+  return (
+    <figure className="simultaneity-figure">
+      <svg viewBox="0 0 760 780" role="img" aria-labelledby="simultaneity-title simultaneity-description">
+        <title id="simultaneity-title">Two frames assign different times to the same distant events</title>
+        <desc id="simultaneity-description">In Frame A, Event L and Event R lie on one horizontal equal-time slice defined by synchronized clocks. In moving Frame B, its tilted equal-time slices pass through the events separately, so the events have different coordinate times. The diagram shows coordinate-time slices, not visual arrival times or signal paths.</desc>
+        <defs>
+          <marker id="simultaneity-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,5 L0,10 z" fill="#5b6878" />
+          </marker>
+        </defs>
+
+        <rect x="16" y="16" width="728" height="336" rx="18" fill="#f7f9fc" stroke="#dce3ec" />
+        <text x="44" y="58" className="simultaneity-heading">Frame A</text>
+        <text x="44" y="88" className="simultaneity-copy">A’s own synchronized clocks</text>
+        <line x1="138" y1="284" x2="138" y2="120" stroke="#5b6878" strokeWidth="2" markerEnd="url(#simultaneity-arrow)" />
+        <line x1="138" y1="284" x2="672" y2="284" stroke="#5b6878" strokeWidth="2" markerEnd="url(#simultaneity-arrow)" />
+        <text x="95" y="126" className="simultaneity-axis">time t</text>
+        <text x="646" y="313" className="simultaneity-axis">space x</text>
+        <line x1="222" y1="222" x2="594" y2="222" stroke="#0b6d78" strokeWidth="4" />
+        <circle cx="276" cy="222" r="12" fill="#2455e6" stroke="#fff" strokeWidth="4" />
+        <circle cx="540" cy="222" r="12" fill="#2455e6" stroke="#fff" strokeWidth="4" />
+        <text x="245" y="198" className="simultaneity-event">Event L</text>
+        <text x="509" y="198" className="simultaneity-event">Event R</text>
+        <text x="226" y="260" className="simultaneity-label">Same coordinate time in Frame A</text>
+        <text x="44" y="333" className="simultaneity-note">A’s synchronized clocks assign L and R the same time.</text>
+
+        <rect x="16" y="372" width="728" height="336" rx="18" fill="#f2f8f8" stroke="#c9e4e4" />
+        <text x="44" y="414" className="simultaneity-heading">Frame B (moving relative to A)</text>
+        <text x="44" y="444" className="simultaneity-copy">B’s own synchronized clocks define tilted equal-time slices</text>
+        <line x1="138" y1="646" x2="138" y2="480" stroke="#5b6878" strokeWidth="2" markerEnd="url(#simultaneity-arrow)" />
+        <line x1="138" y1="646" x2="672" y2="646" stroke="#5b6878" strokeWidth="2" markerEnd="url(#simultaneity-arrow)" />
+        <text x="95" y="486" className="simultaneity-axis">time t′</text>
+        <text x="646" y="675" className="simultaneity-axis">space x′</text>
+        <line x1="205" y1="585" x2="382" y2="500" stroke="#0b6d78" strokeWidth="4" />
+        <line x1="425" y1="640" x2="602" y2="555" stroke="#0b6d78" strokeWidth="4" />
+        <circle cx="276" cy="551" r="12" fill="#2455e6" stroke="#fff" strokeWidth="4" />
+        <circle cx="540" cy="585" r="12" fill="#2455e6" stroke="#fff" strokeWidth="4" />
+        <text x="245" y="527" className="simultaneity-event">Event L</text>
+        <text x="509" y="561" className="simultaneity-event">Event R</text>
+        <text x="170" y="614" className="simultaneity-label">t′L</text>
+        <text x="610" y="606" className="simultaneity-label">t′R</text>
+        <text x="44" y="694" className="simultaneity-note">The events have different coordinate times in Frame B.</text>
+
+        <text x="28" y="744" className="simultaneity-footnote">Coordinate-time slices—not visual arrival times or light-signal paths.</text>
+        <text x="28" y="770" className="simultaneity-footnote">Signal delay is accounted for; it does not cause this disagreement.</text>
+      </svg>
+      <figcaption>
+        <strong>Same events, different slices of “now”</strong>
+        <p>Frame A’s synchronized clocks assign the distant events the same coordinate time. Frame B’s own Einstein-synchronized clock network assigns them different coordinate times.</p>
+        <p>The difference is not when light arrives at an observer. Only spacelike-separated events can have frame-dependent order; timelike and lightlike causal order is preserved.</p>
+      </figcaption>
+    </figure>
+  );
+}
+
 export const mdxComponents = {
   ShortAnswer,
   VisualExplanation,
   CommonMisconception,
   SpeedOfLightFigure,
+  SimultaneityFigure,
 };

@@ -60,7 +60,7 @@ export function ArticleLayout({ article, children }: { article: ArticleDocument;
           <p className="article-description">{frontmatter.description}</p>
           <div className="article-meta">
             {frontmatter.author?.name && <span>By {frontmatter.author.name}</span>}
-            <span>Last updated <time dateTime={frontmatter.dateModified}>{frontmatter.dateModified}</time></span>
+            {frontmatter.dateModified && <span>Last updated <time dateTime={frontmatter.dateModified}>{frontmatter.dateModified}</time></span>}
             <Link href="/editorial-policy/">Editorial method</Link>
           </div>
         </header>
