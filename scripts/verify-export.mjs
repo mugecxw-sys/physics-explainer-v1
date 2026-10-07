@@ -11,13 +11,14 @@ const expected = [
   "physics/quantum/observer-effect/index.html", "physics/quantum/measurement-problem/index.html",
   "physics/quantum/entanglement-faster-than-light/index.html", "physics/relativity/time-dilation/index.html",
   "physics/relativity/speed-of-light-same-for-everyone/index.html", "physics/relativity/simultaneity/index.html",
+  "physics/relativity/gravity-bends-light/index.html",
   "physics/atomic/electron-fall-into-nucleus/index.html", "physics/atomic/atoms-empty-space/index.html",
   "audio/quantum-measurement/index.html", "audio/quantum/quantum-measurement.mp3",
   "audio/time-dilation/index.html", "audio/relativity/moving-fast-changes-time.mp3",
   "sitemap.xml", "robots.txt", "_headers",
 ];
 const forbidden = [
-  "physics/relativity/speed-of-light/index.html", "physics/relativity/gravity-bends-light/index.html",
+  "physics/relativity/speed-of-light/index.html",
   "physics/relativity/relativity-of-simultaneity/index.html", "physics/atomic/atomic-emission/index.html",
   "physics/atomic/orbits-vs-orbitals/index.html", "physics/thermodynamics/why-entropy-increases/index.html",
   "physics/thermodynamics/entropy-disorder/index.html", "physics/thermodynamics/can-entropy-decrease/index.html",
@@ -58,7 +59,8 @@ for (const relativePath of forbidden) {
 const sitemap = readFileSync(path.join(outDir, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 const exportOrigin = production ? productionOrigin : new URL(sitemapUrls[0]).origin;
-if (sitemapUrls.length !== 21) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}`);
+const expectedPageCount = expected.filter((file) => file === "index.html" || file.endsWith("/index.html")).length;
+if (sitemapUrls.length !== expectedPageCount) throw new Error(`Unexpected sitemap URL count: ${sitemapUrls.length}; expected ${expectedPageCount} published pages`);
 if (new Set(sitemapUrls).size !== sitemapUrls.length) throw new Error("Sitemap contains duplicate URLs");
 for (const url of sitemapUrls) {
   if (!existsSync(outputFileForUrl(url))) throw new Error(`Sitemap URL has no exported page: ${url}`);
@@ -179,6 +181,37 @@ if (simultaneitySchema.mainEntityOfPage !== `${exportOrigin}${simultaneityPath}`
 if (!sitemapUrls.includes(`${exportOrigin}${simultaneityPath}`)) throw new Error("Simultaneity article is missing from sitemap");
 if (!relativityHubHtml.includes(`href="${simultaneityPath}"`) || !relativityHubHtml.includes("Why Is Simultaneity Relative?")) throw new Error("Simultaneity is missing from Relativity Topic Hub");
 if (!timeDilationHtml.includes(`href="${simultaneityPath}"`)) throw new Error("Time Dilation natural reverse link to simultaneity is missing");
+
+const gravityPath = "/physics/relativity/gravity-bends-light/";
+const gravityHtml = readFileSync(path.join(outDir, "physics", "relativity", "gravity-bends-light", "index.html"), "utf8");
+if (!gravityHtml.includes("<h1>Why Does Gravity Bend Light If Light Has No Mass?</h1>")) throw new Error("Gravity article H1 is incorrect");
+if (!gravityHtml.includes('id="short-answer-heading">Short answer</h2>')) throw new Error("Gravity Short Answer is missing");
+for (const text of [
+  "Matter and radiation — through their energy, momentum, pressure, and stresses — help determine spacetime geometry.",
+  "In the Standard Model, the photon is a massless particle.",
+  "For a photon, rest mass remains zero.",
+  "A photon has energy and momentum while its rest mass remains zero.",
+  "null geodesics", "coordinate speed", "local physical measurement", "weak-field approximation",
+  "not a universal formula for every curved-spacetime situation",
+  "Outside a black hole, light paths can be strongly curved or redirected through large angles by the surrounding spacetime geometry.",
+  "future-directed lightlike paths no longer lead back to the exterior universe.",
+  "The light is locally following the spacetime geometry; it is not gaining rest mass or being slowed below c locally.",
+]) if (!gravityHtml.includes(text)) throw new Error(`Gravity article is missing audited content: ${text}`);
+if (/some rays can orbit|Visual Specification|Optional second panel|Required note|\\frac|\\alpha|\\\[/.test(gravityHtml)) throw new Error("Old copy, unrendered LaTeX, or implementation notes leaked into Gravity article");
+if (!gravityHtml.includes('role="math" aria-label="Alpha approximately equals four G M divided by b c squared"') || !gravityHtml.includes("4GM") || !gravityHtml.includes("bc²")) throw new Error("Weak-field deflection equation is not accessible static HTML");
+if (!gravityHtml.includes('<svg viewBox="0 0 760 420" role="img" aria-labelledby="gravity-light-title gravity-light-description">') || !gravityHtml.includes("Path expected in flat spacetime") || !gravityHtml.includes("Null geodesics through curved spacetime")) throw new Error("Gravity static accessible figure is missing");
+const gravitySources = gravityHtml.match(/<section class="article-support sources"[\s\S]*?<ol>([\s\S]*?)<\/ol>/)?.[1];
+if (!gravitySources || (gravitySources.match(/<li>/g) ?? []).length !== 10 || /utm_source|href="http:\/\//.test(gravitySources)) throw new Error("Gravity must retain ten clean HTTPS sources");
+if (!gravitySources.includes('href="https://science.nasa.gov/missions/hubble/ambitious-hubble-survey-obtaining-new-dark-matter-census/"')) throw new Error("Direct NASA dark-matter source is missing");
+for (const href of [lightSpeedPath, "/physics/relativity/time-dilation/", simultaneityPath]) if (!gravityHtml.includes(`href="${href}"`)) throw new Error(`Gravity article related link is missing: ${href}`);
+if (!lightSpeedHtml.includes(`href="${gravityPath}"`)) throw new Error("Speed of Light reverse link to Gravity is missing");
+if (!relativityHubHtml.includes(`href="${gravityPath}"`)) throw new Error("Gravity article is absent from Relativity Hub");
+if (!sitemapUrls.includes(`${exportOrigin}${gravityPath}`) || canonicalFromHtml(gravityHtml, "Gravity") !== `${exportOrigin}${gravityPath}`) throw new Error("Gravity sitemap/canonical is incorrect");
+const gravitySchemas = schemaBlocks(gravityHtml, "Gravity article");
+for (const type of ["Article", "BreadcrumbList", "WebSite", "Organization"]) if (!gravitySchemas.some((schema) => schema["@type"] === type)) throw new Error(`Gravity ${type} schema is missing`);
+const gravitySchema = gravitySchemas.find((schema) => schema["@type"] === "Article");
+for (const property of ["author", "reviewedBy", "datePublished", "dateModified", "image"]) if (property in gravitySchema) throw new Error(`Unprovided Gravity ${property} must not be invented`);
+if (gravityHtml.includes("Prefer listening?")) throw new Error("Gravity article must not be linked to a Special Relativity audio episode");
 
 const audioHtml = readFileSync(path.join(outDir, "audio", "quantum-measurement", "index.html"), "utf8");
 if (!audioHtml.includes("Why Quantum Physics Gets Weird When You Measure It")) throw new Error("Audio page heading is missing");

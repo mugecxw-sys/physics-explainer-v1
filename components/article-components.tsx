@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { GravityBendsLightFigure } from "@/components/gravity-bends-light-figure";
 
 export function ShortAnswer({ children }: { children: ReactNode }) {
   return (
@@ -168,4 +169,5 @@ export const mdxComponents = {
   CommonMisconception,
   SpeedOfLightFigure,
   SimultaneityFigure,
+  GravityBendsLightFigure,
 };
