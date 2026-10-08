@@ -5,6 +5,7 @@ const outDir = "out";
 const production = process.env.SITE_DEPLOYMENT === "production";
 const productionOrigin = "https://physicsplainly.com";
 const expected = [
+  "physics/atomic/atoms-emit-certain-colors/index.html",
   "index.html", "topics/index.html", "topics/quantum/index.html", "topics/relativity/index.html",
   "topics/atomic-physics/index.html", "topics/thermodynamics/index.html", "about/index.html",
   "editorial-policy/index.html", "scientific-review/index.html", "sources/index.html", "privacy/index.html",
@@ -290,5 +291,31 @@ for (const file of htmlFiles) {
     if (!existsSync(target)) throw new Error(`Broken internal link in ${file}: ${href}`);
   }
 }
+
+const emissionPath = "/physics/atomic/atoms-emit-certain-colors/";
+const emissionHtml = readFileSync(path.join(outDir, "physics/atomic/atoms-emit-certain-colors/index.html"), "utf8");
+const emissionBody = emissionHtml.match(/<div class="article-body">([\s\S]*?)<\/div><section class="article-support sources"/)?.[1] ?? emissionHtml;
+for (const text of [
+  "Why Do Atoms Emit Only Certain Colors?",
+  "For a bound system, the wavefunction must satisfy the Schrödinger equation for the atom",
+  "binding potential, together with physical requirements such as normalizability.",
+  "For an isolated free atom, a tiny amount of energy can also go into atomic recoil;",
+  "Finite state lifetimes also contribute to intrinsic width",
+  "Doppler broadening", "pressure broadening", "energy bands",
+  "Dense hot matter can also produce broad thermal continua.",
+  "atomic-emission-title", "atomic-emission-description",
+]) if (!emissionHtml.includes(text)) throw new Error(`Atomic emission is missing: ${text}`);
+if ((emissionHtml.match(/class="equation-block"/g) ?? []).length !== 3) throw new Error("Atomic emission requires three readable equation blocks");
+if (/Visual Specification|\\frac|\\Delta|\\\[/.test(emissionBody)) throw new Error("Atomic emission contains implementation instructions or raw math");
+const emissionSources = emissionHtml.match(/<section class="article-support sources"[\s\S]*?<ol>([\s\S]*?)<\/ol>/)?.[1];
+if (!emissionSources || (emissionSources.match(/<li>/g) ?? []).length !== 8 || !emissionSources.includes("7-2-the-heisenberg-uncertainty-principle")) throw new Error("Atomic emission requires all eight FINAL sources, including lifetime/linewidth");
+for (const slug of ["electron-fall-into-nucleus", "atoms-empty-space"]) {
+  if (!emissionHtml.includes(`href="/physics/atomic/${slug}/"`)) throw new Error(`Atomic emission link missing: ${slug}`);
+}
+const electronHtml = readFileSync(path.join(outDir, "physics/atomic/electron-fall-into-nucleus/index.html"), "utf8");
+if (!electronHtml.includes(`href="${emissionPath}"`)) throw new Error("Electron Fall reverse link missing");
+const atomicHub = readFileSync(path.join(outDir, "topics/atomic-physics/index.html"), "utf8");
+if (!atomicHub.includes(`href="${emissionPath}"`)) throw new Error("Atomic topic hub lacks emission article");
+if (!sitemapUrls.includes(exportOrigin + emissionPath)) throw new Error("Atomic emission missing from sitemap");
 
 console.log(`Verified ${sitemapUrls.length} canonical sitemap URLs in ${production ? "production" : "preview"} mode.`);

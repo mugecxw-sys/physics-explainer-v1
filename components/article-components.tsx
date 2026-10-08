@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AtomicEmissionFigure } from "@/components/atomic-emission-figure";
 import { GravityBendsLightFigure } from "@/components/gravity-bends-light-figure";
 
 export function ShortAnswer({ children }: { children: ReactNode }) {
@@ -164,6 +165,7 @@ export function SimultaneityFigure() {
 }
 
 export const mdxComponents = {
+  AtomicEmissionFigure,
   ShortAnswer,
   VisualExplanation,
   CommonMisconception,

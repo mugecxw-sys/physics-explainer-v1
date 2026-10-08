@@ -1,0 +1,214 @@
+---
+title: "Why Do Atoms Emit Only Certain Colors?"
+description: "Why atoms produce specific spectral lines instead of a continuous rainbow, how quantized atomic states set photon energies, and why real spectra are more complicated than a few visible colors."
+slug: "atoms-emit-certain-colors"
+topic: "Atomic Physics"
+status: "ready-for-review"
+sources:
+  - title: "NIST — Atomic Spectra Database (ASD), Version 5.12"
+    url: "https://www.nist.gov/pml/atomic-spectra-database"
+  - title: "NIST — Atomic Spectroscopy: Spectral Lines — Selection Rules, Intensities, and Transition Probabilities"
+    url: "https://www.nist.gov/pml/atomic-spectroscopy-compendium-basic-ideas-notation-data-and-formulas/atomic-spectroscopy"
+  - title: "NIST — Atomic Spectroscopy: Spectral Line Shapes, Widths, and Shifts"
+    url: "https://www.nist.gov/pml/atomic-spectroscopy-compendium-basic-ideas-notation-data-and-formulas/atomic-spectroscopy-6"
+  - title: "OpenStax — University Physics Volume 3, “The Quantum Particle in a Box”"
+    url: "https://openstax.org/books/university-physics-volume-3/pages/7-4-the-quantum-particle-in-a-box"
+  - title: "OpenStax — University Physics Volume 3, “Atomic Spectra and X-rays”"
+    url: "https://openstax.org/books/university-physics-volume-3/pages/8-5-atomic-spectra-and-x-rays"
+  - title: "OpenStax — University Physics Volume 3, “Molecular Spectra”"
+    url: "https://openstax.org/books/university-physics-volume-3/pages/9-2-molecular-spectra"
+  - title: "OpenStax — University Physics Volume 3, “Band Theory of Solids”"
+    url: "https://openstax.org/books/university-physics-volume-3/pages/9-5-band-theory-of-solids"
+  - title: "OpenStax — University Physics Volume 3, “The Heisenberg Uncertainty Principle”"
+    url: "https://openstax.org/books/university-physics-volume-3/pages/7-2-the-heisenberg-uncertainty-principle"
+---
+
+<ShortAnswer>
+
+Atoms emit specific wavelengths because a bound atom does not have every possible energy available to it. Quantum mechanics allows particular atomic states with particular energies. When an excited atom makes an allowed transition to a lower-energy state and emits a photon, that photon carries the energy difference between the two states:
+
+<div className="equation-block" role="math" aria-label="Delta E equals h f"><span>ΔE = hf</span></div>
+
+So a specific energy gap produces a specific photon frequency, and therefore a specific wavelength. Different elements have different atomic structures, so they have different sets of energy gaps and different spectral lines.
+
+“Colors” is only convenient everyday language. Many atomic transitions produce ultraviolet or infrared light rather than visible light, and not every pair of energy states produces a strong spectral line.
+
+</ShortAnswer>
+
+## What Does “Certain Colors” Actually Mean?
+
+If you pass light from an excited low-density gas through a spectroscope, you do not usually get a smooth rainbow. You get bright lines at particular wavelengths.
+
+Those lines are called an **emission spectrum**.
+
+“Color” is convenient everyday language, but atomic lines can lie in the visible, ultraviolet, infrared, and other wavelength ranges. Spectroscopists therefore usually talk about **wavelengths**, **frequencies**, and **spectral lines**.
+
+Hydrogen is a familiar example: some Balmer lines are visible, while many other hydrogen transitions lie outside the visible range.
+
+The real question is: **why does an isolated atom emit particular photon energies instead of every possible energy?**
+
+## Why Atoms Do Not Have Arbitrary Energies
+
+A bound electron in an atom is not a tiny planet that can circle the nucleus on any orbit with any energy.
+
+Modern quantum mechanics describes the atom using quantum states. For a bound system, the wavefunction must satisfy the Schrödinger equation for the atom's binding potential, together with physical requirements such as normalizability.
+
+Those constraints do not permit every stationary wave pattern. Only certain solutions work, and each allowed stationary state has a definite energy. That is what **quantized energy** means here.
+
+Real atoms are more complicated than a one-dimensional textbook well, especially when several electrons interact, but the basic point remains: bound atomic states have a structured set of allowed energies rather than a continuous menu of arbitrary values.
+
+## A Standing-Wave Intuition for Quantized States
+
+A useful analogy is a guitar string fixed at both ends. It cannot support every arbitrary standing-wave pattern; only modes that fit the boundary conditions persist.
+
+A bound quantum wavefunction has a similar mathematical feature. Only certain wave-like solutions satisfy the governing equation and physical constraints, and those solutions correspond to allowed energies.
+
+The analogy stops there: an electron is not literally a vibrating string, and an orbital is not a visible mechanical wave. The point is only that **constraints on wave-like solutions can produce discrete allowed modes**.
+
+## What Happens When an Atom Emits a Photon?
+
+Collisions, electrical discharges, absorbed light, and thermal processes can place atoms in excited states. An excited atom may later make a transition to a lower-energy state and emit radiation.
+
+When a photon is emitted in such a transition, energy conservation requires the emitted photon to carry essentially the difference between the initial and final atomic states:
+
+<div className="equation-block" role="math" aria-label="Delta E equals h f"><span>ΔE = hf</span></div>
+
+Here:
+
+- ΔE is the energy difference between the two atomic states,
+- h is Planck's constant,
+- f is the photon frequency.
+
+For an isolated free atom, a tiny amount of energy can also go into atomic recoil; for the basic spectroscopy picture here, the level gap sets the photon energy to an excellent approximation.
+
+A larger energy gap gives a higher-frequency photon and therefore a shorter wavelength. A smaller energy gap gives a lower-frequency photon and a longer wavelength.
+
+This is why the line spectrum is discrete.
+
+If the atom has allowed states at specific energies, then the gaps between states also have specific values. The photons produced by allowed downward transitions therefore cluster at specific frequencies instead of filling every possible frequency continuously.
+
+It is common to say that “an electron jumps down a level.” That is useful shorthand, but it should not be pictured as a little ball physically falling from one circular track to another. More accurately, **the atom changes from one quantum state to another**.
+
+## Why Different Elements Have Different Spectra
+
+Different elements have different atomic energy structures. Hydrogen is unusually simple, but in multi-electron atoms the nuclear charge, electron configuration, and electron-electron interactions all change the allowed states and their energies.
+
+Different states mean different energy gaps, and different gaps mean different photon frequencies.
+
+That is why atomic spectra can act like fingerprints for identifying species. NIST's Atomic Spectra Database catalogs atomic energy levels, wavelengths, and transition probabilities for many atoms and ions.
+
+The analogy has limits: ionization state, temperature, density, motion, and environment also affect a real observed spectrum.
+
+## Why Not Every Energy Difference Produces a Strong Line
+
+It would be tempting to say:
+
+> If two energy levels exist, the atom can always emit a photon whose energy equals the gap between them.
+
+That is too simple.
+
+Quantum states have more structure than energy alone. The interaction between the atom and the electromagnetic field does not couple every pair of states equally.
+
+This leads to **selection rules**.
+
+For ordinary electric-dipole radiation, some transitions are strongly allowed and others are forbidden by electric-dipole selection rules. “Forbidden” does not always mean impossible: weaker magnetic-dipole, electric-quadrupole, or field-induced processes can sometimes occur.
+
+The practical lesson is simple: **an energy gap sets a possible photon energy, but the structure of the states also determines whether the transition is strong, weak, or unavailable through a particular interaction.**
+
+## Emission vs. Absorption
+
+The same atomic energy structure also explains absorption.
+
+In emission:
+
+**excited state → lower-energy state → photon emitted**
+
+In absorption:
+
+**incoming photon with suitable energy → higher-energy atomic state**
+
+The photon must match an allowed transition closely enough for the atom to absorb it.
+
+The same energy-level structure therefore governs both emission and absorption. Corresponding wavelengths can appear in both, although their observed intensities need not match because populations, conditions, and transition probabilities differ.
+
+## Why Real Spectral Lines Have Width
+
+A diagram often draws an atomic spectral line as an infinitely thin spike at one exact wavelength.
+
+Real measurements do not look quite like that.
+
+NIST notes that observed spectral lines are broadened both by the measuring instrument and by physical effects. Thermal motion produces **Doppler broadening** because atoms moving toward or away from the observer shift the measured frequency slightly. Collisions with neighboring particles produce **pressure broadening** and related shifts.
+
+Finite state lifetimes also contribute to intrinsic width, while electric and magnetic environments can alter or split lines.
+
+So “discrete line” does not mean “a mathematically zero-width line in every experiment.” The measured feature has a finite shape and width around the underlying transition.
+
+## Why Molecules and Solids Look More Complicated
+
+The narrow-line picture works best for isolated atoms or low-density atomic gases.
+
+Molecules can also rotate and vibrate, adding extra spectral structure. In solids, interactions among huge numbers of atoms produce closely spaced states that form **energy bands**, so their optical spectra can be much broader.
+
+Dense hot matter can also produce broad thermal continua. Atomic line spectra are fundamental, but they are not a universal description of all light emitted by matter.
+
+## Common Misconceptions
+
+### “Electrons orbit the nucleus like planets and jump between circular tracks.”
+
+That is the old Bohr-style picture, not the modern quantum description. Atomic quantum states and orbitals replace literal planetary trajectories.
+
+### “An excited electron can lose any arbitrary amount of energy.”
+
+Not in a transition between bound stationary states. The initial and final atomic states have specific energies, so the transition has a specific energy difference.
+
+### “Every possible energy-level gap produces a strong line.”
+
+No. Selection rules and transition probabilities matter.
+
+### “Every atomic spectral line is a visible color.”
+
+No. Many important transitions lie in the ultraviolet, infrared, or other regions.
+
+### “A spectral line has exactly zero width.”
+
+Real lines are broadened by physical conditions and instruments.
+
+### “Every hot object should produce only atomic line spectra.”
+
+No. Dense hot matter can produce broad thermal spectra, and molecules and solids have additional spectral structure.
+
+### “The Bohr model is the full modern explanation.”
+
+No. It was historically important and works remarkably well for some hydrogen results, but modern atomic physics uses quantum states and wavefunctions rather than literal circular electron orbits.
+
+## Visual Explanation
+
+<AtomicEmissionFigure />
+
+## One Thing to Remember
+
+Atoms produce spectral lines because their bound quantum states do not have arbitrary energies.
+
+When an allowed transition emits a photon, the photon's energy matches the gap between two atomic states:
+
+<div className="equation-block" role="math" aria-label="Delta E equals h f"><span>ΔE = hf</span></div>
+
+Specific energy gaps therefore produce specific photon frequencies and wavelengths.
+
+The spectrum is not perfectly simple in real life—selection rules, line broadening, multi-electron structure, molecules, solids, and environmental conditions all matter—but the central reason for atomic line spectra is the discrete energy structure of bound quantum states.
+
+## Go Deeper
+
+- [Why Doesn't an Electron Fall Into the Nucleus?](/physics/atomic/electron-fall-into-nucleus/)
+- [If Atoms Are Mostly Empty Space, Why Is Matter Solid?](/physics/atomic/atoms-empty-space/)
+
+## Related Questions
+
+- Why are atomic energy levels quantized?
+- Why do different elements have different spectra?
+- What is an atomic emission spectrum?
+- Why do atoms absorb only certain wavelengths?
+- What are selection rules in atomic physics?
+- Why are spectral lines broadened?
+- Why doesn't an electron fall into the nucleus?
+- Why do electrons have orbitals instead of planetary orbits?
