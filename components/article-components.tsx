@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { OrbitalsVsOrbitsFigure } from "@/components/orbitals-vs-orbits-figure";
 import { AtomicEmissionFigure } from "@/components/atomic-emission-figure";
 import { GravityBendsLightFigure } from "@/components/gravity-bends-light-figure";
 
@@ -165,6 +166,7 @@ export function SimultaneityFigure() {
 }
 
 export const mdxComponents = {
+  OrbitalsVsOrbitsFigure,
   AtomicEmissionFigure,
   ShortAnswer,
   VisualExplanation,

@@ -5,6 +5,7 @@ const outDir = "out";
 const production = process.env.SITE_DEPLOYMENT === "production";
 const productionOrigin = "https://physicsplainly.com";
 const expected = [
+  "physics/atomic/orbitals-vs-orbits/index.html",
   "physics/atomic/atoms-emit-certain-colors/index.html",
   "index.html", "topics/index.html", "topics/quantum/index.html", "topics/relativity/index.html",
   "topics/atomic-physics/index.html", "topics/thermodynamics/index.html", "about/index.html",
