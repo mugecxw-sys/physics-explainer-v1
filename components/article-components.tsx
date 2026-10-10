@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { EntropyDisorderFigure } from "@/components/entropy-disorder-figure";
 import { EntropyIncreaseFigure } from "@/components/entropy-increase-figure";
 import { OrbitalsVsOrbitsFigure } from "@/components/orbitals-vs-orbits-figure";
 import { AtomicEmissionFigure } from "@/components/atomic-emission-figure";
@@ -167,6 +168,7 @@ export function SimultaneityFigure() {
 }
 
 export const mdxComponents = {
+  EntropyDisorderFigure,
   EntropyIncreaseFigure,
   OrbitalsVsOrbitsFigure,
   AtomicEmissionFigure,

@@ -5,6 +5,7 @@ const outDir = "out";
 const production = process.env.SITE_DEPLOYMENT === "production";
 const productionOrigin = "https://physicsplainly.com";
 const expected = [
+  "physics/thermodynamics/entropy-not-disorder/index.html",
   "physics/thermodynamics/why-entropy-increases/index.html",
   "physics/atomic/orbitals-vs-orbits/index.html",
   "physics/atomic/atoms-emit-certain-colors/index.html",
