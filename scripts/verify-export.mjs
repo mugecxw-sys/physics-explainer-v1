@@ -5,6 +5,7 @@ const outDir = "out";
 const production = process.env.SITE_DEPLOYMENT === "production";
 const productionOrigin = "https://physicsplainly.com";
 const expected = [
+  "physics/thermodynamics/why-entropy-increases/index.html",
   "physics/atomic/orbitals-vs-orbits/index.html",
   "physics/atomic/atoms-emit-certain-colors/index.html",
   "index.html", "topics/index.html", "topics/quantum/index.html", "topics/relativity/index.html",
@@ -22,7 +23,7 @@ const expected = [
 const forbidden = [
   "physics/relativity/speed-of-light/index.html",
   "physics/relativity/relativity-of-simultaneity/index.html", "physics/atomic/atomic-emission/index.html",
-  "physics/atomic/orbits-vs-orbitals/index.html", "physics/thermodynamics/why-entropy-increases/index.html",
+  "physics/atomic/orbits-vs-orbitals/index.html",
   "physics/thermodynamics/entropy-disorder/index.html", "physics/thermodynamics/can-entropy-decrease/index.html",
   "audio/index.html",
 ];
